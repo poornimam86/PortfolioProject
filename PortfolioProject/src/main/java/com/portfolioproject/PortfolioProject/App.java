@@ -1,4 +1,4 @@
-package com.portfoliopro.PortfolioProject;
+package com.portfolioproject.PortfolioProject;
 
 /**
  * Hello world!
