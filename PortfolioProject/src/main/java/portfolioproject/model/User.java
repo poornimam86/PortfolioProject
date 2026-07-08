@@ -69,5 +69,10 @@ public class User {
                 + ", email=" + email
                 + ", phone=" + phone + "]";
     }
+    public void displayUser() {
+        System.out.println("User Name: " + fullName);
+        System.out.println("Email: " + email);
+        System.out.println("Phone: " + phone);
+    }
     
 }
