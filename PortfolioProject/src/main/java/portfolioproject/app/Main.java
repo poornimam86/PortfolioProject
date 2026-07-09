@@ -1,43 +1,73 @@
 package portfolioproject.app;
 
+import java.util.Scanner;
+
 import portfolioproject.model.User;
+import portfolioproject.service.UserService;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("=================================");
-        System.out.println(" Welcome to PortfolioProject ");
-        System.out.println("=================================");
+        // Create Scanner object for keyboard input
+        Scanner sc = new Scanner(System.in);
 
-        // Create a User object
-        User user = new User(
-                101,
-                "Poornima",
-                "poornima@gmail.com",
-                "9876543210");
-        
-        // Display User Details
-        System.out.println("\n----- User Details -----");
-        System.out.println("User ID    : " + user.getUserId());
-        System.out.println("Full Name  : " + user.getFullName());
-        System.out.println("Email      : " + user.getEmail());
-        System.out.println("Phone      : " + user.getPhone());
+        // Read User ID
+        System.out.print("Enter User ID: ");
+        int id = sc.nextInt();
+        sc.nextLine(); // Consume the leftover newline
 
-        // Update User Details
-        user.setFullName("M. M. Poornima");
-        user.setEmail("mmpoornima@gmail.com");
+        // Read Full Name
+        System.out.print("Enter Full Name: ");
+        String name = sc.nextLine();
 
-        // Display Updated Details
-        System.out.println("\n----- Updated User Details -----");
-        System.out.println("User ID    : " + user.getUserId());
-        System.out.println("Full Name  : " + user.getFullName());
-        System.out.println("Email      : " + user.getEmail());
-        System.out.println("Phone      : " + user.getPhone());
-        System.out.println("\n----- Using toString() -----");
-        System.out.println(user);
+        // Read Email
+        System.out.print("Enter Email: ");
+        String email = sc.nextLine();
 
-        System.out.println("\n----- Calling toString() Explicitly -----");
-        System.out.println(user.toString());
+        // Read Phone Number
+        System.out.print("Enter Phone Number: ");
+        String phone = sc.nextLine();
+
+        // Create User object
+        User user = new User();
+
+        // Store the entered values into the User object
+        user.setUserId(id);
+        user.setFullName(name);
+        user.setEmail(email);
+        user.setPhone(phone);
+
+        // Create UserService object
+        UserService service = new UserService();
+
+        // Display heading
+        System.out.println();
+        System.out.println("User object created.");
+        System.out.println("================================");
+        System.out.println(" Welcome to Portfolio Project");
+        System.out.println("================================");
+
+        // Display user details
+        service.displayUser(user);
+        System.out.println("\n----- Update User Details -----");
+
+        System.out.print("Enter New Name: ");
+        String newName = sc.nextLine();
+
+        System.out.print("Enter New Email: ");
+        String newEmail = sc.nextLine();
+
+        System.out.print("Enter New Phone Number: ");
+        String newPhone = sc.nextLine();
+
+        // Update user details
+        service.updateUser(user, newName, newEmail, newPhone);
+
+        // Display updated details
+        System.out.println("\n------ Updated User Details ------");
+        service.displayUser(user);
+        // Close Scanner
+        sc.close();
     }
 }
