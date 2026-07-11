@@ -2,72 +2,202 @@ package portfolioproject.app;
 
 import java.util.Scanner;
 
+import portfolioproject.model.Portfolio;
+import portfolioproject.model.Stock;
 import portfolioproject.model.User;
+
+import portfolioproject.service.PortfolioService;
+import portfolioproject.service.StockService;
 import portfolioproject.service.UserService;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        // Create Scanner object for keyboard input
         Scanner sc = new Scanner(System.in);
 
-        // Read User ID
-        System.out.print("Enter User ID: ");
-        int id = sc.nextInt();
-        sc.nextLine(); // Consume the leftover newline
+        UserService userService = new UserService();
+        StockService stockService = new StockService();
+        PortfolioService portfolioService = new PortfolioService();
 
-        // Read Full Name
-        System.out.print("Enter Full Name: ");
-        String name = sc.nextLine();
+        int choice;
 
-        // Read Email
-        System.out.print("Enter Email: ");
-        String email = sc.nextLine();
+        do {
 
-        // Read Phone Number
-        System.out.print("Enter Phone Number: ");
-        String phone = sc.nextLine();
+            System.out.println("\n========================================");
+            System.out.println("     STOCK PORTFOLIO MANAGEMENT");
+            System.out.println("========================================");
+            System.out.println("1. User Module");
+            System.out.println("2. Stock Module");
+            System.out.println("3. Portfolio Module");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
 
-        // Create User object
-        User user = new User();
+            choice = sc.nextInt();
+            sc.nextLine(); // Consume newline
 
-        // Store the entered values into the User object
-        user.setUserId(id);
-        user.setFullName(name);
-        user.setEmail(email);
-        user.setPhone(phone);
+            switch (choice) {
 
-        // Create UserService object
-        UserService service = new UserService();
+            case 1:
 
-        // Display heading
-        System.out.println();
-        System.out.println("User object created.");
-        System.out.println("================================");
-        System.out.println(" Welcome to Portfolio Project");
-        System.out.println("================================");
+                // ==========================
+                // User Module
+                // ==========================
 
-        // Display user details
-        service.displayUser(user);
-        System.out.println("\n----- Update User Details -----");
+                System.out.print("Enter User ID: ");
+                int id = sc.nextInt();
+                sc.nextLine();
 
-        System.out.print("Enter New Name: ");
-        String newName = sc.nextLine();
+                System.out.print("Enter Full Name: ");
+                String name = sc.nextLine();
 
-        System.out.print("Enter New Email: ");
-        String newEmail = sc.nextLine();
+                System.out.print("Enter Email: ");
+                String email = sc.nextLine();
 
-        System.out.print("Enter New Phone Number: ");
-        String newPhone = sc.nextLine();
+                System.out.print("Enter Phone Number: ");
+                String phone = sc.nextLine();
 
-        // Update user details
-        service.updateUser(user, newName, newEmail, newPhone);
+                User user = new User();
 
-        // Display updated details
-        System.out.println("\n------ Updated User Details ------");
-        service.displayUser(user);
-        // Close Scanner
+                user.setUserId(id);
+                user.setFullName(name);
+                user.setEmail(email);
+                user.setPhone(phone);
+
+                System.out.println("\nUser object created successfully.");
+
+                userService.displayUser(user);
+
+                System.out.print("\nDo you want to update user details? (Y/N): ");
+                String updateChoice = sc.nextLine();
+
+                if (updateChoice.equalsIgnoreCase("Y")) {
+
+                    System.out.print("Enter New Name: ");
+                    String newName = sc.nextLine();
+
+                    System.out.print("Enter New Email: ");
+                    String newEmail = sc.nextLine();
+
+                    System.out.print("Enter New Phone Number: ");
+                    String newPhone = sc.nextLine();
+
+                    userService.updateUser(user, newName, newEmail, newPhone);
+
+                    System.out.println("\nUpdated User Details");
+
+                    userService.displayUser(user);
+                }
+
+                break;
+
+            case 2:
+
+                // ==========================
+                // Stock Module
+                // ==========================
+
+                Stock stock = new Stock();
+
+                System.out.print("Enter Asset ID: ");
+                stock.setAssetId(sc.nextInt());
+                sc.nextLine();
+
+                System.out.print("Enter Asset Name: ");
+                stock.setAssetName(sc.nextLine());
+
+                System.out.print("Enter Purchase Price: ");
+                stock.setPurchasePrice(sc.nextDouble());
+
+                System.out.print("Enter Quantity: ");
+                stock.setQuantity(sc.nextInt());
+                sc.nextLine();
+
+                System.out.print("Enter Company Name: ");
+                stock.setCompanyName(sc.nextLine());
+
+                System.out.print("Enter Market Price: ");
+                stock.setMarketPrice(sc.nextDouble());
+                sc.nextLine();
+
+                stockService.addStock(stock);
+                stockService.displayStocks();
+             // Add stock to ArrayList
+                stockService.addStock(stock);
+
+                // Display all stocks
+                stockService.displayStocks();
+
+               
+                break;
+
+            case 3:           
+
+            
+
+                // ==========================
+                // Portfolio Module
+                // ==========================
+
+                Portfolio portfolio = new Portfolio();
+
+                System.out.print("Enter Portfolio ID: ");
+                portfolio.setPortfolioId(sc.nextInt());
+                sc.nextLine();
+
+                System.out.print("Enter Portfolio Name: ");
+                portfolio.setPortfolioName(sc.nextLine());
+
+                // Create Stock 1
+                Stock stock1 = new Stock(
+                        101,
+                        "TCS",
+                        3200,
+                        10,
+                        "Tata Consultancy Services",
+                        3500);
+
+                // Create Stock 2
+                Stock stock2 = new Stock(
+                        102,
+                        "INFY",
+                        1400,
+                        15,
+                        "Infosys",
+                        1550);
+
+                // Create Stock 3
+                Stock stock3 = new Stock(
+                        103,
+                        "WIPRO",
+                        250,
+                        20,
+                        "Wipro",
+                        275);
+
+                // Add Stocks
+                portfolio.addStock(stock1);
+                portfolio.addStock(stock2);
+                portfolio.addStock(stock3);
+
+                // Display Portfolio
+                portfolio.displayPortfolio();
+
+                break;
+            case 4:
+
+                System.out.println("\nThank You for using Stock Portfolio Management System.");
+
+                break;
+
+            default:
+
+                System.out.println("\nInvalid Choice! Please try again.");
+
+            }
+
+        } while (choice != 4);
+
         sc.close();
     }
 }
