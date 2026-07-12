@@ -1,6 +1,7 @@
 package portfolioproject.model;
 
-public class Stock extends Asset {
+public class Stock extends Asset implements Comparable<Stock>
+{
 
     private String companyName;
     private double marketPrice;
@@ -38,6 +39,12 @@ public class Stock extends Asset {
 
     public void setMarketPrice(double marketPrice) {
         this.marketPrice = marketPrice;
+    }
+    @Override
+    public int compareTo(Stock other) {
+
+        return this.getAssetName().compareToIgnoreCase(other.getAssetName());
+
     }
 
     public void displayDetails() {

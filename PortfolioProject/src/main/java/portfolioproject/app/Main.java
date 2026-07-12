@@ -106,7 +106,9 @@ public class Main {
                     System.out.println("4. Search Stock");
                     System.out.println("5. Update Stock");
                     System.out.println("6. Delete Stock");
-                    System.out.println("7. Back to Main Menu");
+                    System.out.println("7. Sort by Asset Name");
+                    System.out.println("8. Sort by Market Price");
+                    System.out.println("9. Back to Main Menu");
 
                     System.out.print("Enter your choice: ");
                     stockChoice = sc.nextInt();
@@ -216,17 +218,25 @@ public class Main {
                         break;
 
                     case 7:
+                    	 stockService.sortStocksByName();
+                       // System.out.println("Returning to Main Menu...");
+                        break;
+                    case 8:
+
+                        stockService.sortStocksByMarketPrice();
+                        break;
+
+                    case 9:
 
                         System.out.println("Returning to Main Menu...");
                         break;
-
                     default:
 
                         System.out.println("Invalid Choice!");
 
                     }
 
-                } while(stockChoice != 7);
+                } while(stockChoice != 9);
 
                 break;
 

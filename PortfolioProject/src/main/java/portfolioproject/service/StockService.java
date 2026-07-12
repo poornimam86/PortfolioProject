@@ -1,7 +1,10 @@
 package portfolioproject.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+//import java.util.Collections;
+import portfolioproject.comparator.MarketPriceComparator;
 
 import portfolioproject.model.Stock;
 
@@ -23,6 +26,21 @@ public class StockService
         stockList.add(stock);
         stockMap.put(stock.getAssetId(), stock);
         System.out.println("\nStock added successfully.");
+    }
+ // Sort Stocks by Asset Name
+    public void sortStocksByName() {
+
+        Collections.sort(stockList);
+
+        System.out.println("\nStocks sorted by Asset Name successfully.");
+    }
+ // Sort Stocks by Market Price
+    public void sortStocksByMarketPrice() {
+
+        //Collections.sort(stockList, new MarketPriceComparator());
+    	Collections.sort(stockList, (s1, s2) ->
+        Double.compare(s1.getMarketPrice(), s2.getMarketPrice()));
+        System.out.println("\nStocks sorted by Market Price successfully.");
     }
     // Display All Stocks
     public void displayStocks() 
