@@ -93,42 +93,141 @@ public class Main {
 
             case 2:
 
-                // ==========================
-                // Stock Module
-                // ==========================
+                int stockChoice;
 
-                Stock stock = new Stock();
+                do {
 
-                System.out.print("Enter Asset ID: ");
-                stock.setAssetId(sc.nextInt());
-                sc.nextLine();
+                    System.out.println("\n=================================");
+                    System.out.println("        STOCK MODULE");
+                    System.out.println("=================================");
+                    System.out.println("1. Add Stock");
+                    System.out.println("2. View Stocks");
+                    System.out.println("3. Sell Stock");
+                    System.out.println("4. Search Stock");
+                    System.out.println("5. Update Stock");
+                    System.out.println("6. Delete Stock");
+                    System.out.println("7. Back to Main Menu");
 
-                System.out.print("Enter Asset Name: ");
-                stock.setAssetName(sc.nextLine());
+                    System.out.print("Enter your choice: ");
+                    stockChoice = sc.nextInt();
+                    sc.nextLine();
 
-                System.out.print("Enter Purchase Price: ");
-                stock.setPurchasePrice(sc.nextDouble());
+                    switch(stockChoice) {
 
-                System.out.print("Enter Quantity: ");
-                stock.setQuantity(sc.nextInt());
-                sc.nextLine();
+                    case 1:
 
-                System.out.print("Enter Company Name: ");
-                stock.setCompanyName(sc.nextLine());
+                        Stock stock = new Stock();
 
-                System.out.print("Enter Market Price: ");
-                stock.setMarketPrice(sc.nextDouble());
-                sc.nextLine();
+                        System.out.print("Enter Asset ID: ");
+                        stock.setAssetId(sc.nextInt());
+                        sc.nextLine();
 
-                stockService.addStock(stock);
-                stockService.displayStocks();
-             // Add stock to ArrayList
-                stockService.addStock(stock);
+                        System.out.print("Enter Asset Name: ");
+                        stock.setAssetName(sc.nextLine());
 
-                // Display all stocks
-                stockService.displayStocks();
+                        System.out.print("Enter Purchase Price: ");
+                        stock.setPurchasePrice(sc.nextDouble());
 
-               
+                        System.out.print("Enter Quantity: ");
+                        stock.setQuantity(sc.nextInt());
+                        sc.nextLine();
+
+                        System.out.print("Enter Company Name: ");
+                        stock.setCompanyName(sc.nextLine());
+
+                        System.out.print("Enter Market Price: ");
+                        stock.setMarketPrice(sc.nextDouble());
+                        sc.nextLine();
+
+                        stockService.addStock(stock);
+
+                       // System.out.println("\nStock added successfully!");
+
+                        break;
+                       
+
+                    case 2:
+
+                        // Display Stocks
+                    	stockService.displayStocks();
+                    	break;
+                       
+
+                    case 3:
+
+                        // Sell Stock
+                    	System.out.print("Enter Asset Name : ");
+                    	String assetName = sc.nextLine();
+
+                    	System.out.print("Enter Quantity to Sell : ");
+                    	int sellQty = sc.nextInt();
+                    	sc.nextLine();
+
+                    	stockService.sellStock(assetName, sellQty);
+
+                    	break;
+                        
+
+                    case 4:
+
+                        // Search Stock
+                    	System.out.print("Enter Asset ID to Search: ");
+                        int searchId = sc.nextInt();
+                        sc.nextLine();
+
+                        stockService.searchStock(searchId);
+                        break;
+
+                    case 5:
+
+                        // Update Stock
+                   
+
+                        System.out.print("Enter Asset ID : ");
+                        int updateId = sc.nextInt();
+
+                        System.out.print("Enter New Purchase Price : ");
+                        double newPurchase = sc.nextDouble();
+
+                        System.out.print("Enter New Quantity : ");
+                        int newQty = sc.nextInt();
+
+                        System.out.print("Enter New Market Price : ");
+                        double newMarket = sc.nextDouble();
+                        sc.nextLine();
+
+                        stockService.updateStock(updateId,
+                                                 newPurchase,
+                                                 newQty,
+                                                 newMarket);
+
+                        break;
+                    	
+                        
+
+                    case 6:
+
+                        // Delete Stock
+                    	System.out.print("Enter Asset ID to Delete: ");
+                        int deleteId = sc.nextInt();
+                        sc.nextLine();
+
+                        stockService.removeStock(deleteId);
+                        break;
+
+                    case 7:
+
+                        System.out.println("Returning to Main Menu...");
+                        break;
+
+                    default:
+
+                        System.out.println("Invalid Choice!");
+
+                    }
+
+                } while(stockChoice != 7);
+
                 break;
 
             case 3:           
