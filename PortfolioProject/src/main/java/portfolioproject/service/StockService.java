@@ -1,6 +1,7 @@
 package portfolioproject.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import portfolioproject.model.Stock;
 
@@ -8,15 +9,19 @@ public class StockService
 {
     // ArrayList to store multiple stocks
     private ArrayList<Stock> stockList;
+    private HashMap<Integer, Stock> stockMap;
+    
     // Constructor
     public StockService()
     {
         stockList = new ArrayList<>();
+        stockMap = new HashMap<>();
     }
     // Add Stock
     public void addStock(Stock stock) 
     {
         stockList.add(stock);
+        stockMap.put(stock.getAssetId(), stock);
         System.out.println("\nStock added successfully.");
     }
     // Display All Stocks
@@ -37,18 +42,19 @@ public class StockService
 
     
  // Search Stock by Asset ID
-    public void searchStock(int assetId) 
-    {
-        for (Stock stock : stockList)
-        {
-            if (stock.getAssetId() == assetId)
-            {
-                System.out.println("\n========== STOCK FOUND ==========");
-                stock.displayDetails();
-                return;
-            }
+    public void searchStock(int assetId) {
+
+        Stock stock = stockMap.get(assetId);
+
+        if (stock != null) {
+
+            System.out.println("\n========== STOCK FOUND ==========");
+            stock.displayDetails();
+
+        } else {
+
+            System.out.println("\nStock not found.");
         }
-        System.out.println("\nStock not found.");
     }
  // Sell Stock
     public void sellStock(String assetName, int sellQuantity)
@@ -80,35 +86,44 @@ public class StockService
         }
         System.out.println("\nStock not found.");
     }
- // Update Stock
-    public void updateStock(int assetId, double purchasePrice,int quantity, double marketPrice)
-    {
-        for (Stock stock : stockList)
-        {
-            if (stock.getAssetId() == assetId) 
-            {
-                stock.setPurchasePrice(purchasePrice);
-                stock.setQuantity(quantity);
-                stock.setMarketPrice(marketPrice);
-                System.out.println("\nStock updated successfully.");
-                return;
-            }
-        }
-        System.out.println("\nStock not found.");
-    }
-    // Remove Stock
-    public void removeStock(int assetId)
-    {
-        for (int i = 0; i < stockList.size(); i++) 
-        {
-            if (stockList.get(i).getAssetId() == assetId) 
-            {
-                stockList.remove(i);
-                System.out.println("\nStock deleted successfully.");
-                return;
-            }
-        }
+ // Update Stock using HashMap
+    public void updateStock(int assetId, double purchasePrice,
+                            int quantity, double marketPrice) {
 
-        System.out.println("\nStock not found.");
+        Stock stock = stockMap.get(assetId);
+
+        if (stock != null) {
+
+            stock.setPurchasePrice(purchasePrice);
+            stock.setQuantity(quantity);
+            stock.setMarketPrice(marketPrice);
+
+            System.out.println("\nStock updated successfully.");
+
+        } else {
+
+            System.out.println("\nStock not found.");
+        }
+    }
+ // Delete Stock using HashMap
+    public void removeStock(int assetId) {
+
+        // Get stock from HashMap
+        Stock stock = stockMap.get(assetId);
+
+        if (stock != null) {
+
+            // Remove from HashMap
+            stockMap.remove(assetId);
+
+            // Remove from ArrayList
+            stockList.remove(stock);
+
+            System.out.println("\nStock deleted successfully.");
+
+        } else {
+
+            System.out.println("\nStock not found.");
+        }
     }
 }
