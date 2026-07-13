@@ -1,6 +1,7 @@
 package portfolioproject.app;
 
 import java.util.Scanner;
+import portfolioproject.thread.PriceUpdater;
 
 import portfolioproject.model.Portfolio;
 import portfolioproject.model.Stock;
@@ -110,7 +111,8 @@ public class Main {
                     System.out.println("8. Sort by Market Price");
                     System.out.println("9. Sort by Quantity");
                     System.out.println("10. Sort by Purchase Price");
-                    System.out.println("11. Back to Main Menu");
+                    System.out.println("11. Update Price using Thread");
+                    System.out.println("12. Back to Main Menu");
 
                     System.out.print("Enter your choice: ");
                     stockChoice = sc.nextInt();
@@ -235,13 +237,24 @@ public class Main {
                     case 10:
                         stockService.sortStocksByPurchasePrice();
                         break;
+                    case 11: {
+
+                        for (Stock s : stockService.getAllStocks()) {
+                            PriceUpdater thread = new PriceUpdater(s);
+                            thread.start();
+                        }
+
+                        System.out.println("\nAll stock prices are being updated using threads.");
+
+                        break;
+                    }
                     default:
 
                         System.out.println("Invalid Choice!");
 
                     }
 
-                } while(stockChoice != 11);
+                } while(stockChoice != 12);
 
                 break;
 

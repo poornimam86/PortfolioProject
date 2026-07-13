@@ -159,4 +159,7 @@ public class StockService
             System.out.println("\nStock not found.");
         }
     }
+    public ArrayList<Stock> getAllStocks() {
+        return stockList;
+    }
 }
