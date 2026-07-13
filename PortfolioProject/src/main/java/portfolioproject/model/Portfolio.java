@@ -1,5 +1,5 @@
 package portfolioproject.model;
-
+//import portfolioproject.model.Stock;
 import java.util.ArrayList;
 
 public class Portfolio {
@@ -8,8 +8,12 @@ public class Portfolio {
     private String portfolioName;
 
     // Collection to store multiple stocks
-    private ArrayList<Stock> stockList;
-
+    //private ArrayList<Stock> stockList;
+    private ArrayList<Stock> stockList = new ArrayList<>();
+  
+    public ArrayList<Stock> getStockList() {
+        return stockList;
+    }
     // Default Constructor
     public Portfolio() {
         stockList = new ArrayList<>();
@@ -38,9 +42,7 @@ public class Portfolio {
         this.portfolioName = portfolioName;
     }
 
-    public ArrayList<Stock> getStockList() {
-        return stockList;
-    }
+   
 
     public void setStockList(ArrayList<Stock> stockList) {
         this.stockList = stockList;
@@ -58,7 +60,6 @@ public class Portfolio {
         System.out.println("\n========== Portfolio Details ==========");
         System.out.println("Portfolio ID   : " + portfolioId);
         System.out.println("Portfolio Name : " + portfolioName);
-
         if (stockList.isEmpty()) {
             System.out.println("No stocks available.");
             return;

@@ -5,6 +5,7 @@ public class Stock extends Asset implements Comparable<Stock>
 
     private String companyName;
     private double marketPrice;
+    private double purchasePrice;
 
     // Default Constructor
     public Stock() {
@@ -27,6 +28,9 @@ public class Stock extends Asset implements Comparable<Stock>
 
     public String getCompanyName() {
         return companyName;
+    }
+    public double getPurchasePrice() {
+        return purchasePrice;
     }
 
     public void setCompanyName(String companyName) {

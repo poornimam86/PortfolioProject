@@ -14,12 +14,12 @@ public class Main {
 
     public static void main(String[] args) {
 
+    	PortfolioService portfolioService = new PortfolioService();
         Scanner sc = new Scanner(System.in);
-
+        Portfolio portfolio = new Portfolio();
         UserService userService = new UserService();
         StockService stockService = new StockService();
-        PortfolioService portfolioService = new PortfolioService();
-
+        
         int choice;
 
         do {
@@ -108,7 +108,9 @@ public class Main {
                     System.out.println("6. Delete Stock");
                     System.out.println("7. Sort by Asset Name");
                     System.out.println("8. Sort by Market Price");
-                    System.out.println("9. Back to Main Menu");
+                    System.out.println("9. Sort by Quantity");
+                    System.out.println("10. Sort by Purchase Price");
+                    System.out.println("11. Back to Main Menu");
 
                     System.out.print("Enter your choice: ");
                     stockChoice = sc.nextInt();
@@ -142,6 +144,7 @@ public class Main {
                         sc.nextLine();
 
                         stockService.addStock(stock);
+                        portfolio.addStock(stock);
 
                        // System.out.println("\nStock added successfully!");
 
@@ -222,13 +225,15 @@ public class Main {
                        // System.out.println("Returning to Main Menu...");
                         break;
                     case 8:
-
                         stockService.sortStocksByMarketPrice();
                         break;
 
                     case 9:
+                        stockService.sortStocksByQuantity();
+                        break;
 
-                        System.out.println("Returning to Main Menu...");
+                    case 10:
+                        stockService.sortStocksByPurchasePrice();
                         break;
                     default:
 
@@ -236,61 +241,93 @@ public class Main {
 
                     }
 
-                } while(stockChoice != 9);
+                } while(stockChoice != 11);
 
                 break;
 
-            case 3:           
+            case 3:
 
-            
+                int portfolioChoice;
 
-                // ==========================
-                // Portfolio Module
-                // ==========================
+                do {
 
-                Portfolio portfolio = new Portfolio();
+                    System.out.println("\n=================================");
+                    System.out.println("      PORTFOLIO MODULE");
+                    System.out.println("=================================");
+                    System.out.println("1. Create Portfolio");
+                    System.out.println("2. Display Portfolio");
+                    System.out.println("3. Update Portfolio Name");
+                    System.out.println("4. Save Portfolio to JSON");
+                    System.out.println("5. Load Portfolio from JSON");
+                    System.out.println("6. Back to Main Menu");
 
-                System.out.print("Enter Portfolio ID: ");
-                portfolio.setPortfolioId(sc.nextInt());
-                sc.nextLine();
+                    System.out.print("Enter your choice: ");
+                    portfolioChoice = sc.nextInt();
+                    sc.nextLine();
 
-                System.out.print("Enter Portfolio Name: ");
-                portfolio.setPortfolioName(sc.nextLine());
+                    switch (portfolioChoice) {
 
-                // Create Stock 1
-                Stock stock1 = new Stock(
-                        101,
-                        "TCS",
-                        3200,
-                        10,
-                        "Tata Consultancy Services",
-                        3500);
+                    case 1:
 
-                // Create Stock 2
-                Stock stock2 = new Stock(
-                        102,
-                        "INFY",
-                        1400,
-                        15,
-                        "Infosys",
-                        1550);
+                        System.out.print("Enter Portfolio ID: ");
+                        portfolio.setPortfolioId(sc.nextInt());
+                        sc.nextLine();
 
-                // Create Stock 3
-                Stock stock3 = new Stock(
-                        103,
-                        "WIPRO",
-                        250,
-                        20,
-                        "Wipro",
-                        275);
+                        System.out.print("Enter Portfolio Name: ");
+                        portfolio.setPortfolioName(sc.nextLine());
 
-                // Add Stocks
-                portfolio.addStock(stock1);
-                portfolio.addStock(stock2);
-                portfolio.addStock(stock3);
+                        System.out.println("\nPortfolio Created Successfully.");
 
-                // Display Portfolio
-                portfolio.displayPortfolio();
+                        break;
+
+                    case 2:
+
+                        portfolio.displayPortfolio();
+
+                        break;
+
+                    case 3:
+
+                        System.out.print("Enter New Portfolio Name: ");
+                        String newPortfolioName = sc.nextLine();
+
+                        portfolioService.updatePortfolioName(portfolio, newPortfolioName);
+
+                        break;
+
+                    case 4:
+
+                        portfolioService.savePortfolio(portfolio);
+
+                        break;
+
+                    case 5:
+
+                        Portfolio loadedPortfolio = portfolioService.loadPortfolio();
+
+                        if (loadedPortfolio != null) {
+
+                            portfolio = loadedPortfolio;
+
+                            System.out.println("\nPortfolio Loaded Successfully.");
+
+                        }
+
+                        break;
+
+                    case 6:
+
+                        System.out.println("Returning to Main Menu...");
+
+                        break;
+
+                    default:
+
+                        System.out.println("Invalid Choice!");
+
+                    }
+
+                } while (portfolioChoice != 6);
 
                 break;
             case 4:

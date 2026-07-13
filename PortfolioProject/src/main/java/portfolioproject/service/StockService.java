@@ -1,5 +1,6 @@
 package portfolioproject.service;
-
+import portfolioproject.comparator.QuantityComparator;
+import portfolioproject.comparator.PurchasePriceComparator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,6 +42,20 @@ public class StockService
     	Collections.sort(stockList, (s1, s2) ->
         Double.compare(s1.getMarketPrice(), s2.getMarketPrice()));
         System.out.println("\nStocks sorted by Market Price successfully.");
+    }
+    //Sort Stock by Quantity
+    public void sortStocksByQuantity() {
+
+        Collections.sort(stockList, new QuantityComparator());
+
+        System.out.println("\nStocks sorted by Quantity successfully.");
+    }
+    //Sort Stock by PurchasePrice
+    public void sortStocksByPurchasePrice() {
+
+        Collections.sort(stockList, new PurchasePriceComparator());
+
+        System.out.println("\nStocks sorted by Purchase Price successfully.");
     }
     // Display All Stocks
     public void displayStocks() 
