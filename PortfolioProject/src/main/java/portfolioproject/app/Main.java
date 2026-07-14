@@ -3,11 +3,12 @@ package portfolioproject.app;
 import java.util.Scanner;
 import portfolioproject.exception.InvalidStockException;
 import portfolioproject.thread.PriceUpdater;
-
+import portfolioproject.strategy.MarketValueStrategy;
+import portfolioproject.strategy.PurchaseValueStrategy;
 import portfolioproject.model.Portfolio;
 import portfolioproject.model.Stock;
 import portfolioproject.model.User;
-
+import portfolioproject.singleton.PortfolioManager;
 import portfolioproject.service.PortfolioService;
 import portfolioproject.service.StockService;
 import portfolioproject.service.UserService;
@@ -16,6 +17,8 @@ public class Main {
 
     public static void main(String[] args) {
 
+    	PortfolioManager manager = PortfolioManager.getInstance();
+    	manager.displayMessage();
     	PortfolioService portfolioService = new PortfolioService();
         Scanner sc = new Scanner(System.in);
         Portfolio portfolio = new Portfolio();
@@ -113,7 +116,8 @@ public class Main {
                     System.out.println("9. Sort by Quantity");
                     System.out.println("10. Sort by Purchase Price");
                     System.out.println("11. Update Price using Thread");
-                    System.out.println("12. Back to Main Menu");
+                    System.out.println("12. Calculate Stock Value");
+                    System.out.println("13. Back to Main Menu");
 
                     System.out.print("Enter your choice: ");
                     stockChoice = sc.nextInt();
@@ -141,19 +145,27 @@ public class Main {
 
                         System.out.print("Enter Company Name: ");
                         stock.setCompanyName(sc.nextLine());
-
+                        
                         System.out.print("Enter Market Price: ");
                         stock.setMarketPrice(sc.nextDouble());
                         sc.nextLine();
 
+                        System.out.println("\n----- DEBUG -----");
+                        System.out.println("Purchase Price : " + stock.getPurchasePrice());
+                        System.out.println("Market Price   : " + stock.getMarketPrice());
+                        System.out.println("Quantity       : " + stock.getQuantity());
+                        System.out.println("-----------------\n");
+
                         try {
                             stockService.addStock(stock);
+                            portfolio.addStock(stock);
+
                             System.out.println(stock.getAssetName() + " added successfully.");
                         }
                         catch (InvalidStockException e) {
                             System.out.println("Error: " + e.getMessage());
                         }
-                        portfolio.addStock(stock);
+                        //portfolio.addStock(stock);
 
                        // System.out.println("\nStock added successfully!");
 
@@ -255,13 +267,46 @@ public class Main {
 
                         break;
                     }
+                    case 12:
+
+                    	System.out.print("Enter Asset ID: ");
+                    	int assetId = sc.nextInt();
+
+                        System.out.println("\nSelect Valuation Method");
+                        System.out.println("1. Market Value");
+                        System.out.println("2. Purchase Value");
+
+                        int option = sc.nextInt();
+
+                        if(option==1)
+                        {
+
+                            stockService.calculateStockValue(assetId,
+                                    new MarketValueStrategy());
+
+                        }
+                        else if(option==2)
+                        {
+
+                            stockService.calculateStockValue(assetId,
+                                    new PurchaseValueStrategy());
+
+                        }
+                        else
+                        {
+
+                            System.out.println("Invalid Choice");
+
+                        }
+
+                        break;
                     default:
 
                         System.out.println("Invalid Choice!");
 
                     }
 
-                } while(stockChoice != 12);
+                } while(stockChoice != 13);
 
                 break;
 

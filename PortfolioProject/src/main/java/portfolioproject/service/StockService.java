@@ -1,11 +1,12 @@
 package portfolioproject.service;
 import portfolioproject.comparator.QuantityComparator;
-
+import java.util.Optional;
 import portfolioproject.comparator.PurchasePriceComparator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 //import java.util.Collections;
+import portfolioproject.strategy.ValuationStrategy;
 import portfolioproject.comparator.MarketPriceComparator;
 
 import portfolioproject.model.Stock;
@@ -28,8 +29,17 @@ public class StockService
         stockList = new ArrayList<>();
         stockMap = new HashMap<>();
     }
-    // Add Stock
+ // Add Stock
     public void addStock(Stock stock) throws InvalidStockException {
+
+        // Temporary Debug
+        System.out.println("\n===== DEBUG =====");
+        System.out.println("Asset ID        : " + stock.getAssetId());
+        System.out.println("Asset Name      : " + stock.getAssetName());
+        System.out.println("Purchase Price  : " + stock.getPurchasePrice());
+        System.out.println("Market Price    : " + stock.getMarketPrice());
+        System.out.println("Quantity        : " + stock.getQuantity());
+        System.out.println("=================\n");
 
         if (stock == null) {
             throw new InvalidStockException("Stock object cannot be null.");
@@ -54,7 +64,6 @@ public class StockService
         stockList.add(stock);
         stockMap.put(stock.getAssetId(), stock);
 
-       // System.out.println("\nStock added successfully.");
         logger.info("Stock added successfully.");
         System.out.println("\nStock added successfully.");
     }
@@ -87,6 +96,23 @@ public class StockService
 
         System.out.println("\nStocks sorted by Purchase Price successfully.");
     }
+    public void calculateStockValue(int assetId,
+            ValuationStrategy strategy) {
+
+        Stock stock = stockMap.get(assetId);
+
+        if (stock != null) {
+
+            double value = strategy.calculateValue(stock);
+
+            System.out.println("\nCalculated Stock Value : ₹" + value);
+
+        } else {
+
+            System.out.println("Stock not found.");
+        }
+
+    }
     // Display All Stocks
     public void displayStocks() 
     {
@@ -104,15 +130,17 @@ public class StockService
     }
 
     
- // Search Stock by Asset ID
+ // Search Stock by Asset ID using Stream API
     public void searchStock(int assetId) {
 
-        Stock stock = stockMap.get(assetId);
+        Optional<Stock> stock = stockList.stream()
+                .filter(s -> s.getAssetId() == assetId)
+                .findFirst();
 
-        if (stock != null) {
+        if (stock.isPresent()) {
 
             System.out.println("\n========== STOCK FOUND ==========");
-            stock.displayDetails();
+            stock.get().displayDetails();
 
         } else {
 
