@@ -13,16 +13,23 @@ public class PriceUpdater extends Thread {
     @Override
     public void run() {
 
-        double oldPrice = stock.getMarketPrice();
-        double newPrice = oldPrice + 10;
+        synchronized (stock) {
 
-        stock.setMarketPrice(newPrice);
+            double currentPrice = stock.getMarketPrice();
 
-        System.out.println(
-                stock.getCompanyName()
-                + " Price Updated from "
-                + oldPrice
-                + " to "
-                + newPrice);
+            // Random price change between -5% and +5%
+            double change = (Math.random() * 10) - 5;
+
+            double newPrice = currentPrice + (currentPrice * change / 100);
+
+            stock.setMarketPrice(Math.round(newPrice * 100.0) / 100.0);
+
+            System.out.println(
+                    Thread.currentThread().getName()
+                    + " updated "
+                    + stock.getAssetName()
+                    + " price to ₹"
+                    + stock.getMarketPrice());
+        }
     }
 }
