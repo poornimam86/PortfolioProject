@@ -1,6 +1,7 @@
 package portfolioproject.app;
 
 import java.util.Scanner;
+import portfolioproject.exception.InvalidStockException;
 import portfolioproject.thread.PriceUpdater;
 
 import portfolioproject.model.Portfolio;
@@ -145,7 +146,13 @@ public class Main {
                         stock.setMarketPrice(sc.nextDouble());
                         sc.nextLine();
 
-                        stockService.addStock(stock);
+                        try {
+                            stockService.addStock(stock);
+                            System.out.println(stock.getAssetName() + " added successfully.");
+                        }
+                        catch (InvalidStockException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
                         portfolio.addStock(stock);
 
                        // System.out.println("\nStock added successfully!");

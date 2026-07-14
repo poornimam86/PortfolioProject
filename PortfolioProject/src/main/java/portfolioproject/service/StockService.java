@@ -1,5 +1,6 @@
 package portfolioproject.service;
 import portfolioproject.comparator.QuantityComparator;
+
 import portfolioproject.comparator.PurchasePriceComparator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,10 +9,16 @@ import java.util.HashMap;
 import portfolioproject.comparator.MarketPriceComparator;
 
 import portfolioproject.model.Stock;
+import portfolioproject.exception.InvalidStockException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class StockService 
 {
-    // ArrayList to store multiple stocks
+	private static final Logger logger =
+	        LoggerFactory.getLogger(StockService.class);
+	
+	// ArrayList to store multiple stocks
     private ArrayList<Stock> stockList;
     private HashMap<Integer, Stock> stockMap;
     
@@ -22,10 +29,33 @@ public class StockService
         stockMap = new HashMap<>();
     }
     // Add Stock
-    public void addStock(Stock stock) 
-    {
+    public void addStock(Stock stock) throws InvalidStockException {
+
+        if (stock == null) {
+            throw new InvalidStockException("Stock object cannot be null.");
+        }
+
+        if (stockMap.containsKey(stock.getAssetId())) {
+            throw new InvalidStockException("Stock with Asset ID " + stock.getAssetId() + " already exists.");
+        }
+
+        if (stock.getQuantity() <= 0) {
+            throw new InvalidStockException("Quantity must be greater than zero.");
+        }
+
+        if (stock.getPurchasePrice() <= 0) {
+            throw new InvalidStockException("Purchase Price must be greater than zero.");
+        }
+
+        if (stock.getMarketPrice() <= 0) {
+            throw new InvalidStockException("Market Price must be greater than zero.");
+        }
+
         stockList.add(stock);
         stockMap.put(stock.getAssetId(), stock);
+
+       // System.out.println("\nStock added successfully.");
+        logger.info("Stock added successfully.");
         System.out.println("\nStock added successfully.");
     }
  // Sort Stocks by Asset Name

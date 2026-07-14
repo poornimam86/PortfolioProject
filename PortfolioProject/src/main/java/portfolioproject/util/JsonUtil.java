@@ -1,6 +1,7 @@
 package portfolioproject.util;
 
-import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,10 +15,9 @@ public class JsonUtil {
     // Save Portfolio to JSON
     public static void savePortfolio(Portfolio portfolio, String fileName) {
 
-        try {
+        try (FileOutputStream fos = new FileOutputStream(fileName)) {
 
-            mapper.writerWithDefaultPrettyPrinter()
-                  .writeValue(new File(fileName), portfolio);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(fos, portfolio);
 
             System.out.println("\nPortfolio saved successfully to " + fileName);
 
@@ -31,9 +31,9 @@ public class JsonUtil {
     // Load Portfolio from JSON
     public static Portfolio loadPortfolio(String fileName) {
 
-        try {
+        try (FileInputStream fis = new FileInputStream(fileName)) {
 
-            return mapper.readValue(new File(fileName), Portfolio.class);
+            return mapper.readValue(fis, Portfolio.class);
 
         } catch (IOException e) {
 
