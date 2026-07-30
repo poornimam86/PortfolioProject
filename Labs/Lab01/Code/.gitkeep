@@ -1,0 +1,399 @@
+Main.java
+package com.portfolio.app;
+
+import java.util.Scanner;
+import com.portfolio.service.PortfolioService;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        PortfolioService service = new PortfolioService();
+
+        int choice;
+
+        do {
+        	System.out.println("\n===== Portfolio Management System =====");
+        	System.out.println("1. Add Stock");
+        	System.out.println("2. Display Stocks");
+        	System.out.println("3. Search Stock");
+        	System.out.println("4. Update Stock");
+        	System.out.println("5. Delete Stock");
+        	System.out.println("6. Exit");
+        	System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+
+                case 1:
+                    service.addStock();
+                    break;
+
+                case 2:
+                    service.displayStocks();
+                    break;
+                    
+                case 3:
+                    service.searchStock();
+                    break;
+
+                case 4:
+                    service.updateStock();
+                    break;
+
+                case 5:
+                    service.deleteStock();
+                    break;
+
+                case 6:
+                    System.out.println("Thank you for using Portfolio Management System.");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+
+        } while (choice != 6);
+
+        scanner.close();
+    }
+}
+ Asset.java
+package com.portfolio.model;
+
+public class Asset {
+
+    private String assetId;
+    private String assetName;
+
+    // Default Constructor
+    public Asset() {
+
+    }
+
+    // Parameterized Constructor
+    public Asset(String assetId, String assetName) {
+        this.assetId = assetId;
+        this.assetName = assetName;
+    }
+
+    // Getters and Setters
+    public String getAssetId() {
+        return assetId;
+    }
+
+    public void setAssetId(String assetId) {
+        this.assetId = assetId;
+    }
+
+    public String getAssetName() {
+        return assetName;
+    }
+
+    public void setAssetName(String assetName) {
+        this.assetName = assetName;
+    }
+
+    // Display Asset Information
+    @Override
+    public String toString() {
+        return "Asset ID : " + assetId +
+               "\nAsset Name : " + assetName;
+    }
+}
+
+Portfolio.java
+package com.portfolio.model;
+
+import java.util.ArrayList;
+
+public class Portfolio {
+
+    private ArrayList<Stock> stocks;
+
+    // Default Constructor
+    public Portfolio() {
+        stocks = new ArrayList<>();
+    }
+
+    // Add Stock
+    public void addStock(Stock stock) {
+        stocks.add(stock);
+    }
+
+    // Get All Stocks
+    public ArrayList<Stock> getStocks() {
+        return stocks;
+    }
+
+    // Display Portfolio
+    public void displayPortfolio() {
+
+        if (stocks.isEmpty()) {
+            System.out.println("Portfolio is empty.");
+            return;
+        }
+
+        for (Stock stock : stocks) {
+            System.out.println("----------------------------");
+            System.out.println(stock);
+        }
+    }
+}
+
+Stock.java
+package com.portfolio.model;
+
+public class Stock {
+
+    private String stockId;
+    private String companyName;
+    private int quantity;
+    private double price;
+
+    // Default Constructor
+    public Stock() {
+
+    }
+
+    // Parameterized Constructor
+    public Stock(String stockId, String companyName, int quantity, double price) {
+        this.stockId = stockId;
+        this.companyName = companyName;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
+    // Getters and Setters
+
+    public String getStockId() {
+        return stockId;
+    }
+
+    public void setStockId(String stockId) {
+        this.stockId = stockId;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    // Calculate Total Value
+    public double calculateValue() {
+        return quantity * price;
+    }
+
+    // Display Stock Details
+    @Override
+    public String toString() {
+        return "Stock ID : " + stockId +
+               "\nCompany Name : " + companyName +
+               "\nQuantity : " + quantity +
+               "\nPrice : " + price +
+               "\nTotal Value : " + calculateValue();
+    }
+}
+
+User.java
+package com.portfolio.model;
+
+public class User {
+
+    private int userId;
+    private String userName;
+    private String email;
+
+    // Default Constructor
+    public User() {
+
+    }
+
+    // Parameterized Constructor
+    public User(int userId, String userName, String email) {
+        this.userId = userId;
+        this.userName = userName;
+        this.email = email;
+    }
+
+    // Getters and Setters
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    // Display User Information
+    @Override
+    public String toString() {
+        return "User ID : " + userId +
+               "\nUser Name : " + userName +
+               "\nEmail : " + email;
+    }
+}
+PortfolioService.java
+package com.portfolio.service;
+
+import java.util.Scanner;
+import com.portfolio.model.Portfolio;
+import com.portfolio.model.Stock;
+
+public class PortfolioService {
+
+    private Portfolio portfolio = new Portfolio();
+    private Scanner scanner = new Scanner(System.in);
+
+    // Add Stock
+    public void addStock() {
+
+        System.out.print("Enter Stock ID: ");
+        String stockId = scanner.nextLine();
+
+        System.out.print("Enter Company Name: ");
+        String companyName = scanner.nextLine();
+
+        System.out.print("Enter Quantity: ");
+        int quantity = scanner.nextInt();
+
+        System.out.print("Enter Price: ");
+        double price = scanner.nextDouble();
+        scanner.nextLine(); // consume newline
+
+        Stock stock = new Stock(stockId, companyName, quantity, price);
+
+        portfolio.addStock(stock);
+
+        System.out.println("Stock added successfully!");
+    }
+
+    // Display All Stocks
+    public void displayStocks() {
+        portfolio.displayPortfolio();
+    }
+ // Search Stock
+    public void searchStock() {
+
+        System.out.print("Enter Stock ID to Search: ");
+        String stockId = scanner.nextLine();
+
+        boolean found = false;
+
+        for (Stock stock : portfolio.getStocks()) {
+
+            if (stock.getStockId().equalsIgnoreCase(stockId)) {
+
+                System.out.println("\nStock Found");
+                System.out.println("----------------------------");
+                System.out.println(stock);
+
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Stock not found.");
+        }
+    }
+ // Update Stock
+    public void updateStock() {
+
+        System.out.print("Enter Stock ID to Update: ");
+        String stockId = scanner.nextLine();
+
+        boolean found = false;
+
+        for (Stock stock : portfolio.getStocks()) {
+
+            if (stock.getStockId().equalsIgnoreCase(stockId)) {
+
+                System.out.print("Enter New Company Name: ");
+                stock.setCompanyName(scanner.nextLine());
+
+                System.out.print("Enter New Quantity: ");
+                stock.setQuantity(scanner.nextInt());
+
+                System.out.print("Enter New Price: ");
+                stock.setPrice(scanner.nextDouble());
+                scanner.nextLine();
+
+                System.out.println("Stock updated successfully.");
+
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Stock not found.");
+        }
+    }
+ // Delete Stock
+    public void deleteStock() {
+
+        System.out.print("Enter Stock ID to Delete: ");
+        String stockId = scanner.nextLine();
+
+        Stock stockToDelete = null;
+
+        for (Stock stock : portfolio.getStocks()) {
+
+            if (stock.getStockId().equalsIgnoreCase(stockId)) {
+
+                stockToDelete = stock;
+                break;
+            }
+        }
+
+        if (stockToDelete != null) {
+
+            portfolio.getStocks().remove(stockToDelete);
+
+            System.out.println("Stock deleted successfully.");
+
+        } else {
+
+            System.out.println("Stock not found.");
+        }
+    }
+}
