@@ -1,0 +1,20 @@
+{
+  "assets" : {
+    "101" : {
+      "assetId" : "101",
+      "assetName" : "wirpro",
+      "stockId" : "101",
+      "companyName" : "wirpro",
+      "quantity" : 23,
+      "price" : 2000.0
+    },
+    "102" : {
+      "assetId" : "102",
+      "assetName" : "infosys",
+      "stockId" : "102",
+      "companyName" : "infosys",
+      "quantity" : 20,
+      "price" : 1000.0
+    }
+  }
+}
